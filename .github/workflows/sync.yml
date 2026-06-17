@@ -17,10 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version: "22"
       - run: npm install --no-audit --no-fund
       - run: npx playwright install --with-deps chromium
       - run: node sync.mjs
