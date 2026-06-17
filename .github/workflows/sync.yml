@@ -3,7 +3,10 @@ name: sync
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: "*/30 * * * *"
+    # times in UTC. busier window (=07:00-24:00 local) every 10 min,
+    # quiet window (=00:00-07:00 local) every 30 min
+    - cron: "*/10 4-20 * * *"
+    - cron: "*/30 21-23,0-3 * * *"
 
 concurrency:
   group: sync
