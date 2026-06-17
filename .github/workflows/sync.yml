@@ -1,0 +1,27 @@
+name: sync
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "*/30 * * * *"
+
+concurrency:
+  group: sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: node sync.mjs
+        env:
+          SOURCE_URL: ${{ vars.SOURCE_URL }}
+          SINK_URL: ${{ vars.SINK_URL }}
+          SINK_TOKEN: ${{ secrets.INGEST_SECRET }}
